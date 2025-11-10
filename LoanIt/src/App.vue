@@ -1,11 +1,14 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="app-shell">
+    <AppHeader />
+    <main>
+      <h1>Willkommen bei LoanIt</h1>
+    </main>
+  </div>
 </template>
+<script setup>
+import AppHeader from './components/AppHeader.vue'
+</script>
 
-<style scoped></style>
+<style>
+</style>
