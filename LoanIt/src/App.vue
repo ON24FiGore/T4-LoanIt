@@ -1,14 +1,14 @@
 <template>
   <div class="app-shell">
     <AppHeader />
-    <main>
-      <h1>Willkommen bei LoanIt</h1>
-    </main>
+    <HomeView />
   </div>
 </template>
 <script setup>
 import AppHeader from './components/AppHeader.vue'
+import HomeView from './views/HomeView.vue'
 </script>
 
 <style>
+
 </style>
