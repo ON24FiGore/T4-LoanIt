@@ -4,6 +4,7 @@
     <nav style="display:flex;">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/ausleihen">Ausleihen</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
     </nav>
   </header>
 </template>
