@@ -33,18 +33,5 @@ function removeItem(id) {
         </div>
     <p v-else>Du hast noch keine Gegenstände hinzugefügt.</p>
   </section>
-
-  <section>
-    <h2>Ausgeliehene Gegenstände</h2>
-
-    <div v-if="borrowedItems.length > 0">
-      <ul>
-        <li v-for="item in borrowedItems" :key="item.id">
-          {{ item.name }}
-        </li>
-      </ul>
-    </div>
-    <p v-else>Du hast aktuell keine Gegenstände ausgeliehen.</p>
-  </section>
 </template>
 
