@@ -1,19 +1,60 @@
 <script setup>
-import { ref } from 'vue'
+
+import { ref, onMounted } from 'vue'
+
 const items = ref([])
 const newItem = ref('')
-const borrowedItems = ref([])
+const currentUserId = 'Finn-1'
 
-function addItem() {
+async function addItem() {
   const name = newItem.value.trim()
   if (!name) return
-  items.value.push({id: Date.now(),name})
-  newItem.value = ''
+
+  try {
+    const res = await fetch('http://localhost:3000/items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ownerId: currentUserId,
+        name,
+        description: '',
+      }),
+    })
+
+    const data = await res.json()
+    items.value.push(data.item)
+    newItem.value = ''
+  } catch (err) {
+    console.error('Fehler beim Anlegen des Items', err)
+  }
 }
 
-function removeItem(id) {
-  items.value = items.value.filter(item => item.id !== id)
+async function removeItem(id) {
+  try {
+    await fetch(`http://localhost:3000/items/${id}`, {
+      method: 'DELETE',
+    })
+    items.value = items.value.filter(item => item.id !== id)
+  } catch (err) {
+    console.error('Fehler beim Löschen des Items', err)
+  }
 }
+async function loadItems() {
+  try {
+    const res = await fetch('http://localhost:3000/items')
+    const allItems = await res.json()
+    items.value = allItems.filter(item => item.ownerId === currentUserId)
+  } catch (err) {
+    console.error('Fehler beim Laden der Items', err)
+  }
+}
+
+onMounted(() => {
+  loadItems()
+})
+
 </script>
 
 <template>
@@ -34,4 +75,3 @@ function removeItem(id) {
     <p v-else>Du hast noch keine Gegenstände hinzugefügt.</p>
   </section>
 </template>
-
