@@ -4,7 +4,7 @@
     <nav style="display:flex;">
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/ausleihen">Ausleihen</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
+      <button @click="$emit('open-login')"> Login / Registrieren</button>
     </nav>
   </header>
 </template>
