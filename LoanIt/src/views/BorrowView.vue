@@ -58,34 +58,71 @@ async function returnItem(id) {
 
 onMounted(loadItems)
 
+function statusLabel(item) {
+  if (item.status === 'borrowed') return 'Ausgeliehen'
+  return 'Verfügbar'
+}
 
 </script>
 
 <template>
-  <section>
-    <h2>Ausgeliehene Gegenstände</h2>
-      <div v-if="isLoggedIn">
-        <ul v-if="borrowedByMe.length > 0">
-            <li v-for="item in borrowedByMe" :key="item.id">
-              {{ item.name }}
-              <button @click="returnItem(item.id)">Zurückgeben</button>
-            </li>
-          </ul>
-      <p v-else>Du hast aktuell keine Gegenstände ausgeliehen.</p>
+  <section class="borrow">
+    <header class="home-header">
+      <h2>Ausgeliehene Gegenstände</h2>
+    </header>
+    <p v-if="!isLoggedIn" class="info-text">
+      Bitte melde dich an, um deine Ausleihen zu sehen.
+    </p>
+    <div v-else>
+      <div v-if="borrowedByMe.length > 0" class="item-grid">
+        <article v-for="item in borrowedByMe" :key="item.id" class="item-card">
+          <div class="item-own">
+            <h3 class="item-title">{{ item.name }}</h3>
+            <p v-if="item.description" class="item-description">
+              {{ item.description }}
+            </p>
+            <p class="item-status">
+              Status:
+              <span
+                :class="['status-pill', item.status==='borrowed' ? 'status-borrowed' : 'status-available']"
+              >
+                {{ statusLabel(item) }}
+              </span>
+            </p>
+          </div>
+          <button class="delete-btn" @click="returnItem(item.id)">Zurückgeben</button>
+        </article>
+      </div>
+      <p v-else class="info-text">Du hast aktuell keine Gegenstände ausgeliehen.</p>
     </div>
   </section>
 
   <section>
     <h2>Verfügbare Gegenstände</h2>
-      <p v-if="!isLoggedIn">Bitte melde dich an, um Gegenstände auszuleihen.</p>
-        <div v-else>
-          <ul v-if="availableItems.length > 0">
-            <li v-for="item in availableItems" :key="item.id">
-              {{ item.name }}
-              <button @click="borrowItem(item.id)">Ausleihen</button>
-            </li>
-          </ul>
-      <p v-else>Momentan sind keine Gegenstände verfügbar.</p>
+    <p v-if="!isLoggedIn" class="info-text">
+      Bitte melde dich an, um Gegenstände auszuleihen.
+    </p>
+    <div v-else>
+      <div v-if="availableItems.length > 0" class="item-grid">
+        <article v-for="item in availableItems" :key="item.id" class="item-card">
+          <div class="item-own">
+            <h3 class="item-title">{{ item.name }}</h3>
+            <p v-if="item.description" class="item-description">
+              {{ item.description }}
+            </p>
+            <p class="item-status">
+              Status:
+              <span
+                :class="['status-pill', item.status==='borrowed' ? 'status-borrowed' : 'status-available']"
+              >
+                {{ statusLabel(item) }}
+              </span>
+            </p>
+          </div>
+          <button class="borrow-btn" @click="borrowItem(item.id)">Ausleihen</button>
+        </article>
+      </div>
+      <p v-else class="info-text">Momentan sind keine Gegenstände verfügbar.</p>
     </div>
   </section>
 </template>
