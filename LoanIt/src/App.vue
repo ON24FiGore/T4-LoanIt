@@ -325,6 +325,17 @@ textarea:focus {
   color: var(--vue-deep-green);
 }
 
+.item-borrower {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: rgba(31, 45, 61, 0.7);
+}
+
+.item-borrower strong {
+  color: var(--vue-deep-green);
+  font-weight: 600;
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;

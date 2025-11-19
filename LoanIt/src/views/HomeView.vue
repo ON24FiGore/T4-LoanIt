@@ -101,6 +101,9 @@ function statusLabel(item) {
               {{ statusLabel(item) }}
             </span>
           </p>
+          <p v-if="item.status === 'borrowed' && item.borrowerId" class="item-borrower">
+            Ausgeliehen von: <strong>{{ item.borrowerId }}</strong>
+          </p>
         </div>
         <button class="delete-btn" @click="removeItem(item.id)">Löschen</button>
       </article>
