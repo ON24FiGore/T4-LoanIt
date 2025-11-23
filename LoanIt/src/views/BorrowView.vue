@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { API_BASE_URL } from '../config.js'
 
 const availableItems = ref([])
 const currentUserId = localStorage.getItem('currentUserId')
@@ -8,7 +9,7 @@ const isLoggedIn = !!currentUserId
 async function loadItems() {
   if (!isLoggedIn) return
 
-  const res = await fetch('http://localhost:3000/items')
+  const res = await fetch(`${API_BASE_URL}/items`)
   const allItems = await res.json()
 
   availableItems.value = allItems.filter(
@@ -20,7 +21,7 @@ async function loadItems() {
 
 async function borrowItem(id) {
   try {
-    await fetch(`http://localhost:3000/items/${id}`, {
+    await fetch(`${API_BASE_URL}/items/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

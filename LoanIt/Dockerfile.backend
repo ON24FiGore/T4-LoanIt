@@ -1,0 +1,31 @@
+# Backend Dockerfile für Deno
+FROM denoland/deno:latest
+
+# Arbeitsverzeichnis setzen
+WORKDIR /app
+
+# Deno Cache für Dependencies vorbereiten
+COPY deno.json deno.lock ./
+RUN deno cache --unstable-kv main.ts || true
+
+# Alle Backend-Dateien kopieren
+COPY main.ts ./
+COPY *.routes.ts ./
+COPY *.types.ts ./
+COPY validation.ts ./
+
+# Datenverzeichnis für Deno KV erstellen
+RUN mkdir -p /app/data
+
+# Port freigeben
+EXPOSE 3000
+
+# Deno KV benötigt persistente Daten
+VOLUME ["/app/data"]
+
+# Umgebungsvariable für Deno KV Datenpfad
+ENV DENO_KV_PATH=/app/data
+
+# Server starten
+CMD ["deno", "run", "--allow-net", "--allow-read", "--allow-write", "--unstable-kv", "main.ts"]
+

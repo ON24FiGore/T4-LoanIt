@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import { VueFinalModal, ModalsContainer } from 'vue-final-modal'
 import AppHeader from './components/AppHeader.vue'
+import { API_BASE_URL } from './config.js'
 
 const showModal = ref(false)
 const isRegister = ref(false)
@@ -21,7 +22,7 @@ function openLogin() {
 
 async function login() {
   message.value = ''
-  const res = await fetch('http://localhost:3000/users/login', {
+  const res = await fetch(`${API_BASE_URL}/users/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id: id.value, password: password.value })
@@ -42,7 +43,7 @@ async function login() {
 
 async function registerUser() {
   message.value = ''
-  const res = await fetch('http://localhost:3000/users/register', {
+  const res = await fetch(`${API_BASE_URL}/users/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

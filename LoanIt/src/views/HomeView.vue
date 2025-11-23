@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue'
+import { API_BASE_URL } from '../config.js'
 
 const items = ref([])
 const borrowedByMe = ref([])
@@ -16,7 +17,7 @@ async function addItem() {
   const description = newDescription.value.trim()
   if (!name) return
 
-  const res = await fetch('http://localhost:3000/items', {
+  const res = await fetch(`${API_BASE_URL}/items`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -31,7 +32,7 @@ async function addItem() {
 }
 
 async function removeItem(id) {
-  await fetch(`http://localhost:3000/items/${id}`, 
+  await fetch(`${API_BASE_URL}/items/${id}`, 
     { method: 'DELETE' }
   )
   items.value = items.value.filter(item => item.id !== id)
@@ -40,7 +41,7 @@ async function removeItem(id) {
 async function loadItems() {
   if (!isLoggedIn) return
 
-  const res = await fetch('http://localhost:3000/items')
+  const res = await fetch(`${API_BASE_URL}/items`)
   const all = await res.json()
 
   items.value = all.filter(item => item.ownerId === currentUserId)
@@ -54,7 +55,7 @@ async function loadItems() {
 onMounted(loadItems)
 
 async function returnItem(id) {
-  await fetch(`http://localhost:3000/items/${id}`, 
+  await fetch(`${API_BASE_URL}/items/${id}`, 
     {method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

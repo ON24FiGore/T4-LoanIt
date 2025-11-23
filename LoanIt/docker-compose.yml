@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: loanit-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DENO_ENV=production
+    volumes:
+      # Persistente Daten für Deno KV
+      - deno-kv-data:/app/data
+    networks:
+      - loanit-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "deno", "eval", "fetch('http://localhost:3000/items').then(r => r.ok ? 0 : 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: loanit-frontend
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - backend
+    networks:
+      - loanit-network
+    restart: unless-stopped
+
+volumes:
+  deno-kv-data:
+    driver: local
+
+networks:
+  loanit-network:
+    driver: bridge
+
